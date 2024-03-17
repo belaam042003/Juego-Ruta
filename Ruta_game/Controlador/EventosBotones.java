@@ -31,13 +31,13 @@ public class EventosBotones implements ActionListener {
         JButton botonPresionado = (JButton) e.getSource();
 
         // Verificar qué botón se ha presionado y ejecutar la acción correspondiente
-        if (botonPresionado.getText().equals("Poner Carta")) {
+        if (botonPresionado.getText().equals("Jugar Carta")) {
             // Llamar al método realizarAccionB con el parámetro correspondiente para poner una carta
             accionListener.realizarAccionB(1);
-        } else if (botonPresionado.getText().equals("Descartar Carta")) {
+        } else if (botonPresionado.getText().equals("Intercambiar Carta")) {
             // Llamar al método realizarAccionB con el parámetro correspondiente para descartar una carta
             accionListener.realizarAccionB(2);
-        } else if (botonPresionado.getText().equals("Pasar Turno")) {
+        } else if (botonPresionado.getText().equals("Siguiente Turno")) {
             // Llamar al método realizarAccionB con el parámetro correspondiente para pasar el turno
             accionListener.realizarAccionB(6);
         }

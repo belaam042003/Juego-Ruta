@@ -16,7 +16,7 @@ public class Jugador implements Serializable {
     private int id;
 
     /**
-     * Total de jugadores que participarán en el juego.
+     * Total de puntos de los jugadores que participarán en el juego.
      */
     private int jug_total;
 

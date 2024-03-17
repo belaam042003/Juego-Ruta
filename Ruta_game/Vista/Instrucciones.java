@@ -36,7 +36,7 @@ public class Instrucciones extends JFrame {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         panel.setBackground(Color.BLACK);
-        panel.setSize(120, 400);
+        panel.setSize(400, 300);
 
         // Agregar una etiqueta con la imagen de bienvenida en la parte superior
         ImageIcon imagenBienvenida = new ImageIcon("Imagenes_principales/instrucciones.png");
@@ -77,6 +77,9 @@ public class Instrucciones extends JFrame {
         // Ajustar el tamaño de la ventana automáticamente
         add(panel);
         pack();
+
+        // Establecer el tamaño de la ventana después de llamar a pack()
+        
 
         // Centrar la ventana en la pantalla
         setLocationRelativeTo(null);
