@@ -1,12 +1,21 @@
 package Modelo;
 
-
 import java.util.List;
 import Controlador.*;
 
+/**
+ * Esta clase contiene métodos que implementan las reglas del juego.
+ */
 public class Reglas {
 
- 
+    /**
+     * Verifica y aplica la regla correspondiente para una carta dada.
+     *
+     * @param c La carta sobre la cual se aplicarán las reglas.
+     * @param jugadores Lista de jugadores en el juego.
+     * @param jugadorSeleccionado El jugador que está realizando la acción.
+     * @return true si se cumple la regla, false en caso contrario.
+     */
     public static boolean VerificarRegla(Carta c, List<Jugador> jugadores, Jugador jugadorSeleccionado) {
 
         String nombre = c.getNombre();
@@ -44,6 +53,15 @@ public class Reglas {
         return verificacion;
     }
 
+    /**
+     * Aplica la regla relacionada con la seguridad.
+     *
+     * @param cartaSeguridad La carta de seguridad que se va a verificar.
+     * @param jugadores Lista de jugadores en el juego.
+     * @param jugadorActual El jugador que está realizando la acción.
+     * @return true si se cumple la regla, false en caso contrario.
+     */
+
     public static boolean ReglaSeguridad(Carta cartaSeguridad, List<Jugador> jugadores, Jugador jugadorActual) {
         int limiteSeguridad = 2;  // Límite de cartas seguridad en el mazo
     
@@ -63,6 +81,14 @@ public class Reglas {
             return false;
         }
     }
+
+    /**
+     * Aplica la regla relacionada con la solución.
+     *
+     * @param cartaSolucion La carta de solución que se va a verificar.
+     * @param Jugador El jugador que está realizando la acción.
+     * @return true si se cumple la regla, false en caso contrario.
+     */
 
     public static boolean ReglaSolucion(Carta cartaSolucion,Jugador Jugador) {
 
@@ -104,17 +130,28 @@ public class Reglas {
 
     }
 
+    /**
+     * Aplica la regla relacionada con las cartas de problema.
+     *
+     * @param cartaProblema La carta de problema que se va a verificar.
+     * @param jugadores Lista de jugadores en el juego.
+     * @param jugadorActual El jugador que está realizando la acción.
+     * @return true si se cumple la regla, false en caso contrario.
+     */
+
     public static boolean ReglaProblema(Carta cartaProblema, List<Jugador> jugadores, Jugador jugadorActual) {
         String nombreCartaProblema = cartaProblema.getNombre();
 
+        // Seleccionar otro jugador al que se le pondrá la carta problema
         Jugador jugadorDestino = seleccionarOtroJugador(jugadores, jugadorActual);
 
         if (jugadorDestino != null) {
-            
+             // Verificar si el otro jugador ya tiene una carta problema
             if (tieneCartaProblema(jugadorDestino)) {
                 System.out.println("El jugador " + jugadorDestino.getId() + " ya tiene una carta problema, no se coloca otra.");
                 return false;
             }
+
             // Verificar si el otro jugador tiene una carta seguridad similar
             String nombreSeguridad = buscarCartasSeguridad(nombreCartaProblema);
 
@@ -123,11 +160,14 @@ public class Reglas {
                         return false;
             } 
             
+            // Colocar la carta problema en la zona del jugador destino
             jugadorDestino.getZona().add(cartaProblema);
             System.out.println("Carta problema '" + nombreCartaProblema + "' puesta en la zona del jugador " + jugadorDestino.getId() + ".");
             
+            // Eliminar la carta problema de la mano del jugador actual
             if (jugadorActual.getMano().remove(cartaProblema)) {
                 System.out.println("Carta problema '" + nombreCartaProblema + "' eliminada de la mano del jugador " + jugadorActual.getId() + ".");
+                // Sacar una carta del mazo para el jugador actual
                 Logica_Game_P.sacarCarta(Juego.mazo, jugadores, jugadorActual.getId());
             } else {
                 System.out.println("Error al intentar eliminar la carta problema '" + nombreCartaProblema + "' de la mano del jugador " + jugadorActual.getId() + ".");
@@ -142,15 +182,22 @@ public class Reglas {
         }
     }
 
+    /**
+     * Aplica la regla relacionada con las cartas de distancia.
+     *
+     * @param cartaDistancia La carta de distancia que se va a verificar.
+     * @param zonaJugador La zona de cartas del jugador.
+     * @return true si se cumple la regla, false en caso contrario.
+     */
+
     public static boolean ReglaDistancia(Carta cartaDistancia, List<Carta> zonaJugador) {
         String nombreCartaDistancia = cartaDistancia.getNombre();
         String cartaContraria = contradiccion(nombreCartaDistancia);
 
         // Verificar si la carta distancia es del tipo "Siga"
-
         boolean esSiga = nombreCartaDistancia.equals("Siga");
 
-        // Verificar si hay una carta hayCartaDistanciaEnMazo en el mazo
+        // Verificar si hay una carta distancia en el mazo
         boolean hayCartaDistanciaEnMazo = zonaJugador.stream()
                 .anyMatch(carta -> obtenerTipoCarta(carta.getNombre()).equals("Distancia"));
 
@@ -180,21 +227,52 @@ public class Reglas {
 
     }
 
+    /**
+     * Verifica si el jugador tiene una carta de seguridad similar en su zona.
+     *
+     * @param jugador El jugador que se va a verificar.
+     * @param nombreSeguridad El nombre de la carta de seguridad a verificar.
+     * @return true si el jugador tiene una carta de seguridad similar, false en caso contrario.
+     */
+
     private static boolean tieneCartaSeguridadSimilar(Jugador jugador, String nombreSeguridad) {
         // Verificar si el jugador ya tiene una carta seguridad similar en su zona
         return jugador.getZona().stream()
                 .anyMatch(carta -> carta.getTipo().equals("Seguridad") && carta.getNombre().equals(nombreSeguridad));
     }
 
+    /**
+     * Verifica si el jugador tiene una carta de problema en su zona.
+     *
+     * @param jugador El jugador que se va a verificar.
+     * @return true si el jugador tiene una carta de problema, false en caso contrario.
+     */
+
     private static boolean tieneCartaProblema(Jugador jugador) {
         return jugador.getZona().stream().anyMatch(carta -> Reglas.obtenerTipoCarta(carta.getNombre()).equals("Problema"));
     }
+
+    /**
+     * Verifica si el jugador tiene una carta "Siga" en su zona.
+     *
+     * @param jugador El jugador que se va a verificar.
+     * @return true si el jugador tiene una carta "Siga", false en caso contrario.
+     */
 
     private static boolean tieneCartaSiga(Jugador jugador) {
         // Verificar si el jugador ya tiene una carta seguridad similar en su zona
         return jugador.getZona().stream()
                 .anyMatch(carta -> carta.getNombre().equals("Siga"));
     }
+
+    /**
+     * Permite al jugador seleccionar a otro jugador para colocar una carta problema.
+     *
+     * @param jugadores Lista de jugadores disponibles.
+     * @param jugadorActual El jugador que está realizando la acción.
+     * @return El jugador seleccionado para colocar la carta problema.
+     */
+
 
     public static Jugador seleccionarOtroJugador(List<Jugador> jugadores, Jugador jugadorActual) {
         
@@ -226,53 +304,67 @@ public class Reglas {
         return jugadorSeleccionado;
     }
 
+    /**
+     * Obtiene el tipo de carta a partir de su nombre.
+     *
+     * @param nombre El nombre de la carta.
+     * @return El tipo de carta.
+     */
+
     public static String obtenerTipoCarta(String nombre) {
         switch (nombre) {
-            case "Sin gasolina":
-            case "Pinchazo":
-            case "Accidente":
+            case "Falta de combustible":
+            case "Pinchadura":
+            case "Choque":
             case "Limite de Vel.":
-            case "Pare":
+            case "Stop":
                 return "Problema";
-            case "Gasolina":
-            case "Llanta de repuesto":
+            case "Combustible":
+            case "Rueda de auxilio":
             case "Reparacion":
             case "Fin de Limite":
             case "Siga":
-                return "Distancia";
-            case "Cisterna":
-            case "Llanta irrompible":
+                return "Solucion";
+            case "Combustible extra":
+            case "Llanta a prueba de pinchaduras":
             case "As de Volante":
-            case "Via Libre":
+            case "Prioridad de paso":
                 return "Seguridad";
             case "200":
             case "100":
             case "75":
             case "50":
             case "25":
-                return "Solucion";
+                return "Distancia";
             default:
                 return "ERROR";
         }
     }
 
+    /**
+     * Obtiene el nombre de la carta que es una contradicción con la carta dada.
+     *
+     * @param nombre El nombre de la carta.
+     * @return El nombre de la carta contradictoria.
+     */
+
     public static String contradiccion(String nombre) {
         switch (nombre) {
 
-            case "Gasolina":
-                return "Sin gasolina";
-            case "Sin gasolina":
-                return "Gasolina";
+            case "Combustible":
+                return "Falta de combustible";
+            case "Falta de combustible":
+                return "Combustible";
 
-            case "Llanta de repuesto":
-                return "Pinchazo";
-            case "Pinchazo":
-                return "Llanta de repuesto";
+            case "Rueda de auxilio":
+                return "Pinchadura";
+            case "Pinchadura":
+                return "Rueda de auxilio";
 
-            case "Reparacion":
-                return "Accidente";
-            case "Accidente":
-                return "Reparacion";
+            case "Taller":
+                return "Choque";
+            case "Choque":
+                return "Taller";
 
             case "Fin de Limite":
                 return "Limite de Vel.";
@@ -280,8 +372,8 @@ public class Reglas {
                 return "Fin de Limite";
 
             case "Siga":
-                return "Pare";
-            case "Pare":
+                return "Stop";
+            case "Stop":
                 return "Siga";
 
             default:
@@ -289,19 +381,26 @@ public class Reglas {
         }
     }
 
+    /**
+     * Busca el nombre de la carta de seguridad similar a la carta dada.
+     *
+     * @param nombre El nombre de la carta.
+     * @return El nombre de la carta de seguridad similar.
+     */
+
     public static String buscarCartasSeguridad(String nombre) {
         switch (nombre) {
-            case "Sin gasolina":
-                return "Cisterna";
+            case "Falta de combustible":
+                return "Combustible extra";
 
-            case "Pinchazo":
-                return "Llanta irrompible";
+            case "Pinchadura":
+                return "Llanta a prueba de pinchaduras";
 
-            case "Accidente":
+            case "Choque":
                 return "As de Volante";
 
-            case "Limite de Vel.":
-                return "Via Libre";
+            case "Limite de velocidad maxima 50":
+                return "Prioridad de paso";
 
             default:
                 return "ERROR";

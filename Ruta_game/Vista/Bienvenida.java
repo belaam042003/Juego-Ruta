@@ -1,73 +1,96 @@
 package Vista;
-import javax.swing.*;
 
 import Main.Launcher;
-import Modelo.*;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-public class Bienvenida extends JFrame {
-    private JButton btnIniciar;
+/**
+ * La clase Bienvenida representa la ventana de bienvenida del juego.
+ * Contiene un mensaje de bienvenida, una imagen, instrucciones y un botón para iniciar el juego.
+ */
 
+ public class Bienvenida extends JFrame {
+    private JButton btnIniciar; // Botón para iniciar el juego
+
+    /**
+     * Constructor de la clase Bienvenida.
+     * Inicializa los componentes de la ventana de bienvenida.
+     */
     public Bienvenida() {
         initComponents();
     }
 
+    /**
+     * Método privado para inicializar los componentes de la ventana de bienvenida.
+     */
     private void initComponents() {
-        // Inicializar componentes
-        btnIniciar = new JButton("Iniciar Juego");
-
-        // Agregar ActionListener al botón de inicio
-        btnIniciar.addActionListener(e -> Launcher.iniciarJuego());
-
-        // Configurar el diseño de la ventana de inicio
+        // Configurar la ventana de inicio
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setTitle("¡Bienvenido al juego en donde tú eres el conductor de tu victoria!");
+        setTitle("¡Bienvenido a la Carrera Extrema!");
 
+        // Crear un panel con diseño BoxLayout para organizar los componentes verticalmente
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        panel.setBackground(Color.BLACK);
+        panel.setSize(120, 400);
 
-        // Crear un panel con GridBagLayout para controlar el diseño
-        JPanel panel = new JPanel(new GridBagLayout());
+        // Agregar una etiqueta con la imagen de bienvenida en la parte superior
+        ImageIcon imagenBienvenida = new ImageIcon("Imagenes_principales/ruta1.png");
+        JLabel labelImagen = new JLabel(imagenBienvenida);
+        labelImagen.setAlignmentX(Component.CENTER_ALIGNMENT);
+        panel.add(labelImagen);
 
-        // Establecer una imagen de fondo para el panel
-        ImageIcon background = new ImageIcon("Imagenes/ruta.png"); // Ajusta la ruta a tu imagen de fondo
-        JLabel backgroundLabel = new JLabel(background);
-        backgroundLabel.setLayout(new BorderLayout());
-        panel.add(backgroundLabel, new GridBagConstraints());
+        // Agregar un panel para las instrucciones con un diseño personalizado
+        JPanel instructionsPanel = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                Graphics2D g2d = (Graphics2D) g.create();
+                g2d.dispose();
+            }
+        };
+        //instructionsPanel.setPreferredSize(new Dimension(200, 120));
+        instructionsPanel.setBackground(Color.BLACK);
+        instructionsPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        panel.add(instructionsPanel);
 
-        // Agregar componentes al panel
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.insets = new Insets(10, 10, 10, 10); // Añadir espacio entre los componentes
-        panel.add(new JLabel(""), gbc);
+        // Agregar un botón de inicio con un diseño personalizado
+        btnIniciar = new JButton("¡Comenzar!");
+        btnIniciar.setBackground(Color.RED);
+        btnIniciar.setForeground(Color.WHITE);
+        btnIniciar.setFont(new Font("Arial", Font.BOLD, 20));
+        btnIniciar.setFocusPainted(false);
+        btnIniciar.setAlignmentX(Component.CENTER_ALIGNMENT);
+        btnIniciar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                instrucciones();
+            }
+        });
+        panel.add(Box.createVerticalStrut(5)); // Espacio vertical
+        panel.add(btnIniciar);
 
-        gbc.gridy = 1;
-
-        gbc.gridy = 2;
-        panel.add(btnIniciar, gbc);
-        // Establecer color de fondo
-        panel.setBackground(Color.LIGHT_GRAY);
-        // Agregar el panel a la ventana
+        // Ajustar el tamaño de la ventana automáticamente
         add(panel);
         pack();
-        
-        setSize(new Dimension(600, 700));
+
+        // Centrar la ventana en la pantalla
         setLocationRelativeTo(null);
     }
+    
+    /**
+     * Método privado para mostrar la ventana de instrucciones.
+     */
+    private void instrucciones() {
+        // Crea y muestra la ventana de instrucciones
+        Instrucciones instrucciones = new Instrucciones();
+        instrucciones.setVisible(true);
+        
+        // Cierra la ventana actual
+        dispose();
+    }
 
-    public static  int mostrarStringYObtenerNumero(String mensaje) {
-        String input = JOptionPane.showInputDialog(null, mensaje);
-        try {
-            return Integer.parseInt(input);
-        } catch (NumberFormatException ex) {
-            JOptionPane.showMessageDialog(null, "Por favor, ingrese un número válido.", "Error", JOptionPane.ERROR_MESSAGE);
-            // Puedes manejar este error de otra manera según tus necesidades
-            return mostrarStringYObtenerNumero(mensaje);
-        }
-    }    
 }

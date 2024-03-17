@@ -1,57 +1,77 @@
 package Modelo;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.swing.SwingUtilities;
+
+import Conexiones.Cliente;
 import Controlador.*;
+import Vista.Tablero;
 
-
+/**
+ * La clase Juego representa la lógica del juego. 
+ * Contiene métodos para inicializar el juego, realizar acciones de juego, cambiar turnos, 
+ * y mantener el estado actual del juego.
+ */
 public class Juego {
     public static int turnoActual = 0;
     public static List<Carta> mazo;
     private static boolean descartarCartaSeleccionada = false;
     public static List<Jugador> jugadores = new ArrayList<>();
     public static int opcion = 0;
-   // private static Juego jueguito;
+    private static Tablero tablero;
     private static final Map<Integer, Runnable> acciones = new HashMap<>();
 
-    //private static Cliente cliente =  new Cliente("localhost", 12345);
-    
-    
+    private static Cliente cliente = new Cliente("localhost", 12345);
+
+    /**
+     * Método para configurar las opciones del juego y comenzar el juego.
+     */
     public static void opcionesJuego() {
         int input = EventoJugadores.StringNumeroVisual("Ingrese Numero de Jugadores");
         int numJugadores = input;
 
         if (numJugadores > 0) {
-            // Crear una instancia de JuegoRuta y ejecutar su método main
+            // Inicializar el mazo y las cartas del juego
             Juego.mazo = new ArrayList<>();
             Cartas_Factory fabricaCartas = new Cartas_Factory();
             Logica_Game.agregarCartasAlMazo(Juego.mazo, fabricaCartas, new Integer[] { 3, 3, 3, 4, 5 }, "Problema");
             Logica_Game.agregarCartasAlMazo(Juego.mazo, fabricaCartas, new Integer[] { 6, 6, 6, 6, 14 }, "Distancia");
             Logica_Game.agregarCartasAlMazo(Juego.mazo, fabricaCartas, new Integer[] { 1, 1, 1, 1 }, "Seguridad");
             Logica_Game.agregarCartasAlMazo(Juego.mazo, fabricaCartas, new Integer[] { 4, 12, 10, 10, 10 }, "Solucion");
+
+            // Inicializar jugadores y repartir cartas iniciales
             inicializarJugadores(jugadores, numJugadores);
             mazoInical(Juego.mazo, jugadores, numJugadores);
 
+            // Mostrar el tablero de juego en el hilo de interfaz de usuario
             SwingUtilities.invokeLater(() -> {
-                //jueguito = new Juego(jugadores, Juego::realizarAccion);
-                //jueguito.setVisible(true);
+                tablero = new Tablero(jugadores, Juego::realizarAccion);
+                tablero.setVisible(true);
             });
 
             System.out.println("------------------------------------------------------------");
             System.out.println("Bienvenido al Ruta/1000 Millas");
-            //cliente.iniciar();
-            
         }
     }
 
+    /**
+     * Método para inicializar los jugadores del juego.
+     * @param jugadores La lista de jugadores del juego.
+     * @param numJugadores El número total de jugadores.
+     */
     private static void inicializarJugadores(List<Jugador> jugadores, int numJugadores) {
         for (int i = 1; i <= numJugadores; i++) {
             jugadores.add(new Jugador(i));
         }
     }
 
+    /**
+     * Método para realizar la acción de poner una carta en el juego.
+     * @param nombreCarta El nombre de la carta a poner.
+     */
     public static void realizarAccionPonerCarta(String nombreCarta) {
         int idAct = jugadores.get(turnoActual).getId();
         int posicionCarta = obtenerPosicionCartaEnMano(jugadores, idAct, nombreCarta);
@@ -64,6 +84,7 @@ public class Juego {
     }
     
     static {
+        // Configuración de acciones de juego
         acciones.put(1, () -> {
             int idJugadorPonerCarta = jugadores.get(turnoActual).getId();
             int idCarta = EventoJugadores.StringNumeroVisual("Ingresa el id de la carta:");
@@ -120,17 +141,21 @@ public class Juego {
         }
     }
 
+    /**
+     * Método para cambiar al siguiente turno de juego.
+     * @param jugadores La lista de jugadores del juego.
+     */
     private static void cambiarTurno(List<Jugador> jugadores) {
         turnoActual = (turnoActual + 1) % jugadores.size();
         descartarCartaSeleccionada = false; // Reiniciar la variable al cambiar de turno
-
-        // Envía la lista de jugadores al cliente
-        //if (cliente != null) {
-            //cliente.enviarJugadoresYTurno(jugadores,turnoActual);
-       // }
     }
-    
 
+    /**
+     * Método para repartir cartas iniciales a los jugadores.
+     * @param mazo El mazo de cartas del juego.
+     * @param jugadores La lista de jugadores del juego.
+     * @param numJugadores El número total de jugadores.
+     */
     public static void mazoInical(List<Carta> mazo, List<Jugador> jugadores, int numJugadores) {
         for (int i = 0; i < numJugadores; i++) {
             System.out.println("MAZO DEL JUGADOR " + (i + 1) + ": ");
@@ -139,6 +164,14 @@ public class Juego {
             }
         }
     }
+
+    /**
+     * Método para obtener la posición de una carta en la mano de un jugador.
+     * @param jugadores La lista de jugadores del juego.
+     * @param idJugador El ID del jugador.
+     * @param nombreCarta El nombre de la carta.
+     * @return La posición de la carta en la mano del jugador, o -1 si la carta no se encuentra.
+     */
     public static int obtenerPosicionCartaEnMano(List<Jugador> jugadores, int idJugador, String nombreCarta) {
         for (Jugador jugador : jugadores) {
             if (jugador.getId() == idJugador) {
@@ -152,28 +185,34 @@ public class Juego {
         }
         return -1; // Si la carta no se encuentra en la mano
     }
-    ///public static void setCliente(Cliente cliente) {
-       // Juego.cliente = cliente;
-    //}
 
-    public static void actualizarJugadores(List<Jugador> objetoRecibido) {
+    /**
+     * Método para configurar el cliente de conexión.
+     * @param cliente El cliente de conexión.
+     */
+    public static void setCliente(Cliente cliente) {
+        Juego.cliente = cliente;
+    }
+
+    /**
+     * Método para actualizar la lista de jugadores con información recibida del servidor.
+     * @param nuevaListaJugadores La nueva lista de jugadores recibida del servidor.
+     */
+    public static void actualizarJugadores(List<Jugador> nuevaListaJugadores) {
         // Actualizar la lista de jugadores con la nueva información recibida del servidor
         jugadores.clear();
-        jugadores.addAll(objetoRecibido);
+        jugadores.addAll(nuevaListaJugadores);
         System.out.println("Nueva Lista llegando");
     }
-    
 
-    // Método ficticio para obtener la lista de jugadores
+    // Métodos ficticios para obtener la lista de jugadores y el turno actual
     private static List<Jugador> obtenerListaJugadores() {
         // Implementa lógica para obtener la lista de jugadores
         return jugadores;
     }
 
-    // Método ficticio para obtener el turno actual
     private static int obtenerTurnoActual() {
         // Implementa lógica para obtener el turno actual
         return turnoActual;
     }
-    
 }

@@ -4,8 +4,18 @@ import java.util.Collections;
 import java.util.List;
 import Controlador.*;
 
+/**
+ * Esta clase contiene la lógica del juego.
+ */
 public class Logica_Game_P {
 
+    /**
+     * Este método saca una carta del mazo y la añade a la mano de un jugador específico.
+     *
+     * @param mazo Lista de cartas que representa el mazo del juego.
+     * @param jugadores Lista de jugadores en el juego.
+     * @param idJugador Identificador del jugador al que se le sacará la carta.
+     */
     public static void sacarCarta(List<Carta> mazo,List<Jugador> jugadores, int idJugador) {
         Jugador jugadorSeleccionado = null;
         for (Jugador jugador : jugadores) {
@@ -25,6 +35,13 @@ public class Logica_Game_P {
         }
     }
 
+    /**
+     * Este método permite a un jugador seleccionar una carta de su mano y colocarla en la zona del juego, siempre que cumpla con ciertas reglas.
+     *
+     * @param jugadores Lista de jugadores en el juego.
+     * @param idJugador Identificador del jugador que realiza la acción.
+     * @param idCarta Identificador de la carta que el jugador desea poner en la zona.
+     */
     public static void ponerCarta(List<Jugador> jugadores, int idJugador,int idCarta) {
         Jugador jugadorSeleccionado = null;
 
@@ -74,6 +91,12 @@ public class Logica_Game_P {
         }
     }
 
+    /**
+     * Este método permite a un jugador descartar una carta de su mano.
+     *
+     * @param jugadores Lista de jugadores en el juego.
+     * @param idJugador Identificador del jugador que realiza la acción.
+     */
     public static void descartarCarta(List<Jugador> jugadores, int idJugador) {
         Jugador jugadorSeleccionado = null;
         
@@ -116,6 +139,12 @@ public class Logica_Game_P {
         }
     }
 
+    /**
+     * Este método muestra la mano de un jugador específico.
+     *
+     * @param jugadores Lista de jugadores en el juego.
+     * @param idJugador Identificador del jugador cuya mano se va a mostrar.
+     */
     public static void verManoJugador(List<Jugador> jugadores, int idJugador) {
         Jugador jugadorSeleccionado = null;
 
@@ -137,6 +166,12 @@ public class Logica_Game_P {
         }
     }
 
+    /**
+     * Este método muestra la zona de juego de un jugador específico.
+     *
+     * @param jugadores Lista de jugadores en el juego.
+     * @param idJugador Identificador del jugador cuya zona de juego se va a mostrar.
+     */
     public static void verZona(List<Jugador> jugadores, int idJugador) {
         Jugador jugadorSeleccionado = null;
 
