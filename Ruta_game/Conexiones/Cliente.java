@@ -46,11 +46,13 @@ public class Cliente {
             while (true) {
                 // Leer un objeto serializable del flujo de entrada
                 Serializable objetoRecibido = (Serializable) inputStream.readObject();
+                String action = inputStream.readUTF();
 
                 // Realizar la lógica correspondiente con el objeto recibido
                 if (objetoRecibido instanceof List<?>) {
                     // Actualizar la lista de jugadores en Juego
-                    Juego.actualizarJugadores((List<Jugador>) objetoRecibido);
+                    System.out.println("Datos recibidos: " + action);
+                    Juego.actualizarJugadores((List<Jugador>) objetoRecibido, action);
                 } else if (objetoRecibido instanceof Integer) {
                     // Actualizar el turno actual en Juego
                     Juego.turnoActual = (Integer) objetoRecibido;
@@ -66,12 +68,17 @@ public class Cliente {
      * @param jugadores La lista de jugadores a enviar.
      * @param turnoActual El turno actual a enviar.
      */
-    public void enviarJugadoresYTurno(List<Jugador> jugadores, int turnoActual) {
+    public void enviarJugadoresYAccion(List<Jugador> jugadores, int action) {
         try {
             // Envía la lista de jugadores al servidor
             outputStream.writeObject(jugadores);
-            // Envía el turno actual al servidor
-            outputStream.writeObject(turnoActual);
+            // Envía un string con el numero de acción
+            outputStream.writeUTF(String.valueOf(action));
+
+            // Implementar Turnos
+            outputStream.flush();
+
+            System.out.println("Action ENVIADA" + action);
         } catch (IOException e) {
             e.printStackTrace();
         }

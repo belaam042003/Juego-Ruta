@@ -138,6 +138,7 @@ public class Juego {
 
         if (accion != null) {
             accion.run();
+            cliente.enviarJugadoresYAccion(jugadores, opcion);
         } else {
             System.out.println("Opción no válida. Por favor, selecciona de nuevo.");
         }
@@ -200,12 +201,14 @@ public class Juego {
      * Método para actualizar la lista de jugadores con información recibida del servidor.
      * @param nuevaListaJugadores La nueva lista de jugadores recibida del servidor.
      */
-    public static void actualizarJugadores(List<Jugador> nuevaListaJugadores) {
+    public static void actualizarJugadores(List<Jugador> nuevaListaJugadores, String option) {
         // Actualizar la lista de jugadores con la nueva información recibida del servidor
         jugadores.clear();
         jugadores.addAll(nuevaListaJugadores);
-        System.out.println("Nueva Lista llegando");
+        System.out.println("Nueva Lista llegando"); 
         EventoJugadores.StringVisual("Turno del jugador: " + jugadores.get(turnoActual).getId());
+        EventosBotones botonController = tablero.getBotonController();
+        botonController.action_online(option);
     }
 
     // Métodos ficticios para obtener la lista de jugadores y el turno actual
