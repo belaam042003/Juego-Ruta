@@ -1,7 +1,6 @@
 package Controlador;
 
 import Modelo.Juego;
-import Vista.Bienvenida;
 import Vista.Instrucciones;
 import Modelo.Jugador;
 import java.util.*;
@@ -55,5 +54,9 @@ public class EventoJugadores {
      */
     public static int StringNumeroVisual(String mensaje) {
         return Instrucciones.mostrarStringYObtenerNumero(mensaje);
+    }
+
+    public static void StringVisual(String mensaje) {
+        Instrucciones.mostrarString(mensaje);
     }
 }

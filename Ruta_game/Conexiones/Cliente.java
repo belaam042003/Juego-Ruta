@@ -50,7 +50,7 @@ public class Cliente {
                 // Realizar la lógica correspondiente con el objeto recibido
                 if (objetoRecibido instanceof List<?>) {
                     // Actualizar la lista de jugadores en Juego
-                    //Juego.actualizarJugadores((List<Jugador>) objetoRecibido);
+                    Juego.actualizarJugadores((List<Jugador>) objetoRecibido);
                 } else if (objetoRecibido instanceof Integer) {
                     // Actualizar el turno actual en Juego
                     Juego.turnoActual = (Integer) objetoRecibido;

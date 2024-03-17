@@ -128,9 +128,7 @@ public class Logica_Game_P {
                 mano.remove(idCarta);
                 
                 sacarCarta(Juego.mazo, jugadores, jugadorSeleccionado.getId());
-
-
-                
+  
             } else {
                 System.out.println("ID de carta no válido. Inténtalo de nuevo.");
             }
@@ -157,7 +155,7 @@ public class Logica_Game_P {
         }
 
         if (jugadorSeleccionado != null) {
-            System.out.println("Mano del jugador " + jugadorSeleccionado.getId() + ":");
+            System.out.println("Cartas del jugador " + jugadorSeleccionado.getId() + ":");
             for (Carta carta : jugadorSeleccionado.getMano()) {
                 carta.mostrarCartas();
             }

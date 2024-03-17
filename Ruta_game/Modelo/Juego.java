@@ -54,6 +54,8 @@ public class Juego {
 
             System.out.println("------------------------------------------------------------");
             System.out.println("Bienvenido al Ruta/1000 Millas");
+            cliente.iniciar();
+            EventoJugadores.StringVisual("Turno del jugador:"+jugadores.get(turnoActual).getId());
         }
     }
 
@@ -79,7 +81,7 @@ public class Juego {
         if (posicionCarta != -1) {
             Logica_Game_P.ponerCarta(jugadores, idAct, posicionCarta);
         } else {
-            System.out.println("La carta no se encuentra en la mano del jugador actual.");
+            System.out.println("La carta no se encuentra en la cartas del jugador actual.");
         }
     }
     
@@ -87,7 +89,7 @@ public class Juego {
         // Configuración de acciones de juego
         acciones.put(1, () -> {
             int idJugadorPonerCarta = jugadores.get(turnoActual).getId();
-            int idCarta = EventoJugadores.StringNumeroVisual("Ingresa el id de la carta:");
+            int idCarta = EventoJugadores.StringNumeroVisual("Ingresa el numero de la carta:");
             Logica_Game_P.ponerCarta(jugadores, idJugadorPonerCarta, idCarta);
         });
 
@@ -97,14 +99,14 @@ public class Juego {
                 Logica_Game_P.descartarCarta(jugadores, idJugadorDescartarCarta);
                 descartarCartaSeleccionada = true;
             } else {
-                System.out.println("Ya has descartado una carta en este turno.");
+                System.out.println("Ya descataste una carta, te toca esperar el otro turno.");
             }
         });
 
         acciones.put(3, () -> Logica_Game.verMazo(mazo));
 
         acciones.put(4, () -> {
-            System.out.println("Ingresa el ID del jugador para ver su mano:");
+            System.out.println("Ingresa el ID del jugador para ver su mazo:");
             int idJugador = jugadores.get(turnoActual).getId();
             Logica_Game_P.verManoJugador(jugadores, idJugador);
         });
@@ -203,6 +205,7 @@ public class Juego {
         jugadores.clear();
         jugadores.addAll(nuevaListaJugadores);
         System.out.println("Nueva Lista llegando");
+        EventoJugadores.StringVisual("Turno del jugador: " + jugadores.get(turnoActual).getId());
     }
 
     // Métodos ficticios para obtener la lista de jugadores y el turno actual

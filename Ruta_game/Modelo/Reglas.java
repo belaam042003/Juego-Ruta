@@ -28,9 +28,9 @@ public class Reglas {
                 verificacion = ReglaProblema(c, jugadores, jugadorSeleccionado);
 
                 break;
-            case "Solucion":
-                System.out.println("Carta de Solucion Encontrada para Regla");
-                verificacion = ReglaSolucion(c, jugadorSeleccionado);
+            case "Distancia":
+                System.out.println("Carta de Distancia Encontrada para Regla");
+                verificacion = ReglaDistancia(c, jugadorSeleccionado);
 
 
                 break;
@@ -39,10 +39,10 @@ public class Reglas {
                 verificacion = ReglaSeguridad(c, jugadores, jugadorSeleccionado);
 
                 break;
-            case "Distancia":
-                System.out.println("Carta Distancia Encontrada para Regla");
+            case "Solucion":
+                System.out.println("Carta Solucion Encontrada para Regla");
                 List<Carta> zonaJugador = jugadorSeleccionado.getZona();
-                verificacion = ReglaDistancia(c, zonaJugador);
+                verificacion = ReglaSolucion(c, zonaJugador);
 
                 break;
             default:
@@ -90,13 +90,13 @@ public class Reglas {
      * @return true si se cumple la regla, false en caso contrario.
      */
 
-    public static boolean ReglaSolucion(Carta cartaSolucion,Jugador Jugador) {
+    public static boolean ReglaDistancia(Carta cartaDistancia,Jugador Jugador) {
 
         
-        boolean hayProblemaEnMazo = Jugador.getZona().stream()
-                .anyMatch(carta -> obtenerTipoCarta(carta.getNombre()).equals("Problema"));
-        if(hayProblemaEnMazo){
-            System.out.println("Hay problema en el mazo :(");
+        boolean hayDistanciaEnMazo = Jugador.getZona().stream()
+                .anyMatch(carta -> obtenerTipoCarta(carta.getNombre()).equals("Distancia"));
+        if(hayDistanciaEnMazo){
+            System.out.println("Hay distancia en el mazo :(");
             return false;
         }
 
@@ -106,21 +106,21 @@ public class Reglas {
             return false;
         }
         
-        String nombreCartaSolucion = cartaSolucion.getNombre();
-        boolean hayCartaSolucionEnZona = Jugador.getZona().removeIf(carta -> obtenerTipoCarta(carta.getNombre()).equals("Solucion"));
+        String nombreCartaDistancia = cartaDistancia.getNombre();
+        boolean hayCartaDistanciaEnZona = Jugador.getZona().removeIf(carta -> obtenerTipoCarta(carta.getNombre()).equals("Distancia"));
 
-        if (hayCartaSolucionEnZona) {
-            System.out.println("Ya hay una carta solucion , se sustituye por la nueva "  );
+        if (hayCartaDistanciaEnZona) {
+            System.out.println("Ya hay una carta distancia , se sustituye por la nueva "  );
         }
 
     try {
             // Convertir el nombre de la carta solucion a un entero
-            int valorCarta = Integer.parseInt(nombreCartaSolucion);
+            int valorCarta = Integer.parseInt(nombreCartaDistancia);
 
             // Sumar el valor de la carta al atributo "total" del jugador
             Jugador.setTotal(Jugador.getTotal() + valorCarta);
 
-            System.out.println("Se sumó el valor de la carta solucion '" + nombreCartaSolucion + "' al total del jugador " + Jugador.getId() + ".");
+            System.out.println("Se sumó el valor de la carta distancia '" + nombreCartaDistancia + "' al total del jugador " + Jugador.getId() + ".");
             return true;
         } catch (NumberFormatException e) {
             // Manejar la excepción en caso de que el nombre de la carta no sea un número válido
@@ -176,8 +176,6 @@ public class Reglas {
         } else {
             System.out.println(
                     "No hay otros jugadores disponibles para colocar la carta problema '" + nombreCartaProblema + "'.");
-            // Aquí puedes decidir qué hacer en caso de que no haya otros jugadores
-            // disponibles.
             return false;
         }
     }
@@ -190,16 +188,16 @@ public class Reglas {
      * @return true si se cumple la regla, false en caso contrario.
      */
 
-    public static boolean ReglaDistancia(Carta cartaDistancia, List<Carta> zonaJugador) {
-        String nombreCartaDistancia = cartaDistancia.getNombre();
-        String cartaContraria = contradiccion(nombreCartaDistancia);
+    public static boolean ReglaSolucion(Carta cartaSolucion, List<Carta> zonaJugador) {
+        String nombreCartaSolucion = cartaSolucion.getNombre();
+        String cartaContraria = contradiccion(nombreCartaSolucion);
 
         // Verificar si la carta distancia es del tipo "Siga"
-        boolean esSiga = nombreCartaDistancia.equals("Siga");
+        boolean esSiga = nombreCartaSolucion.equals("Siga");
 
         // Verificar si hay una carta distancia en el mazo
-        boolean hayCartaDistanciaEnMazo = zonaJugador.stream()
-                .anyMatch(carta -> obtenerTipoCarta(carta.getNombre()).equals("Distancia"));
+        boolean hayCartaSolucionEnMazo = zonaJugador.stream()
+                .anyMatch(carta -> obtenerTipoCarta(carta.getNombre()).equals("Solucion"));
 
         boolean contrariaEnMazo = zonaJugador.removeIf(carta -> carta.getNombre().equals(cartaContraria));
         if (esSiga) {
@@ -207,9 +205,9 @@ public class Reglas {
                 System.out.println("Quitado Pare en la Zona.");
                 return true;
             }
-            if (hayCartaDistanciaEnMazo) {
+            if (hayCartaSolucionEnMazo) {
                 System.out.println(
-                        "No se puede poner la carta distancia 'Siga' en el mazo porque hay una carta problema en el mazo.");
+                        "No se puede poner la carta solucion 'Siga' en el mazo porque hay una carta problema en el mazo.");
                 return false;
             }
 
@@ -218,10 +216,10 @@ public class Reglas {
 
         if (contrariaEnMazo) {
             // Poner la carta distancias en el mazo
-            System.out.println("Carta distancia '" + nombreCartaDistancia + "' puesta en el mazo exitosamente.");
+            System.out.println("Carta solucion '" + nombreCartaSolucion + "' puesta en el mazo exitosamente.");
             return true;
         } else {
-            System.out.println("No se puede poner la carta distancia '" + nombreCartaDistancia + "' en el mazo.");
+            System.out.println("No se puede poner la carta solucion '" + nombreCartaSolucion + "' en el mazo.");
             return false;
         }
 
@@ -399,7 +397,7 @@ public class Reglas {
             case "Choque":
                 return "As de Volante";
 
-            case "Limite de velocidad maxima 50":
+            case "Limite de vel.":
                 return "Prioridad de paso";
 
             default:

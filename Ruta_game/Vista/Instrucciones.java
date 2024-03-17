@@ -1,7 +1,5 @@
 package Vista;
 
-import javax.swing.BoxLayout;
-
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
@@ -11,8 +9,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.*;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
 
 import Main.Launcher;
 
@@ -101,4 +97,7 @@ public class Instrucciones extends JFrame {
             return mostrarStringYObtenerNumero(mensaje);
         }
     }
+    public static  void mostrarString(String mensaje) {
+        JOptionPane.showMessageDialog(null, mensaje);
+    } 
 }
