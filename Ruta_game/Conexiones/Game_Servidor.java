@@ -71,10 +71,9 @@ public class Game_Servidor {
             while (true) {
                 // Leer un objeto del cliente
                 Serializable objetoRecibido = (Serializable) inputStream.readObject();
-                String action = inputStream.readUTF();; // Convertir el String a int si es necesario
-
+                
                 // Enviar el objeto recibido a todos los clientes conectados
-                enviarAClientes(objetoRecibido, action);
+                enviarAClientes(objetoRecibido);
             }
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
@@ -86,12 +85,11 @@ public class Game_Servidor {
      * 
      * @param objeto El objeto a enviar.
      */
-    private void enviarAClientes(Serializable objeto, String action) {
+    private void enviarAClientes(Serializable objeto) {
         for (ObjectOutputStream clienteStream : clientesStreams) {
             try {
                 // Enviar el objeto a través del flujo de salida del cliente
                 clienteStream.writeObject(objeto);
-                clienteStream.writeUTF(action);
                 clienteStream.flush();
             } catch (IOException e) {
                 e.printStackTrace();

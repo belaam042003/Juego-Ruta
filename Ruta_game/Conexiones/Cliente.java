@@ -42,17 +42,17 @@ public class Cliente {
      * Método privado que se ejecuta en un hilo separado para recibir actualizaciones del servidor.
      */
     private void recibirActualizaciones() {
+        int count = 0; 
         try {
             while (true) {
                 // Leer un objeto serializable del flujo de entrada
                 Serializable objetoRecibido = (Serializable) inputStream.readObject();
-                String action = inputStream.readUTF();
 
                 // Realizar la lógica correspondiente con el objeto recibido
                 if (objetoRecibido instanceof List<?>) {
                     // Actualizar la lista de jugadores en Juego
-                    System.out.println("Datos recibidos: " + action);
-                    Juego.actualizarJugadores((List<Jugador>) objetoRecibido, action);
+                    System.out.println("Datos recibidos" + count++);
+                    Juego.actualizarJugadores((List<Jugador>) objetoRecibido);
                 } else if (objetoRecibido instanceof Integer) {
                     // Actualizar el turno actual en Juego
                     Juego.turnoActual = (Integer) objetoRecibido;
@@ -72,8 +72,6 @@ public class Cliente {
         try {
             // Envía la lista de jugadores al servidor
             outputStream.writeObject(jugadores);
-            // Envía un string con el numero de acción
-            outputStream.writeUTF(String.valueOf(action));
 
             // Implementar Turnos
             outputStream.flush();
