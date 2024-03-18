@@ -14,7 +14,7 @@ import java.util.List;
 public class Tablero extends JFrame {
 
     private List<Jugador> jugadores; // Lista de jugadores en el juego
-    private NuevosJugadores jugadores_n; // Panel que muestra la información de los jugadores
+    public NuevosJugadores jugadores_n; // Panel que muestra la información de los jugadores
     public JButton btnPonerCarta; // Botón para poner una carta
     public JButton btnDescartarCarta; // Botón para descartar una carta
     public JButton btnPasarTurno; // Botón para pasar el turno
@@ -31,7 +31,7 @@ public class Tablero extends JFrame {
         this.jugadores = jugadores;
         this.accionListener = accionListener;
         initComponents(); // Inicializa los componentes de la ventana
-        initTimer(); // Inicializa el temporizador para actualizar la interfaz periódicamente
+        //initTimer(); // Inicializa el temporizador para actualizar la interfaz periódicamente
     }
 
     /**
@@ -90,6 +90,7 @@ public class Tablero extends JFrame {
      * Método para inicializar el temporizador que actualiza la interfaz
      * periódicamente.
      */
+    
     private void initTimer() {
         Timer timer = new Timer(1000, e -> {
             // Cada segundo, actualiza la interfaz con la información de los jugadores

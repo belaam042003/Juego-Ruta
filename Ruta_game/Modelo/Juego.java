@@ -24,7 +24,7 @@ public class Juego {
     private static Tablero tablero;
     private static final Map<Integer, Runnable> acciones = new HashMap<>();
 
-    private static Cliente cliente = new Cliente("localhost", 12345);
+    private static Cliente cliente = new Cliente("localhost", 12345, tablero);
 
     /**
      * Método para configurar las opciones del juego y comenzar el juego.
@@ -50,6 +50,7 @@ public class Juego {
             SwingUtilities.invokeLater(() -> {
                 tablero = new Tablero(jugadores, Juego::realizarAccion);
                 tablero.setVisible(true);
+                cliente.setTablero(tablero);
             });
 
             System.out.println("------------------------------------------------------------");
@@ -80,6 +81,7 @@ public class Juego {
         if (posicionCarta != -1) {
             boolean val = Logica_Game_P.ponerCarta(jugadores, idAct, posicionCarta);
             if(val){
+                System.out.println(jugadores.get(0).getZona().size() + " Tamaño zona antes de enviar ");
                 cliente.enviarJugadoresYAccion(jugadores, opcion);
             }
         } else {

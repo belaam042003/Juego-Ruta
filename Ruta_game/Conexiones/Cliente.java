@@ -8,6 +8,7 @@ import java.net.Socket;
 import java.util.List;
 import Modelo.Juego;
 import Modelo.Jugador;
+import Vista.Tablero;
 
 /**
  * La clase Cliente se encarga de establecer la conexión con el servidor y manejar la comunicación entre el cliente y el servidor.
@@ -16,13 +17,15 @@ public class Cliente {
     private ObjectInputStream inputStream; // Flujo de entrada para recibir datos del servidor
     private ObjectOutputStream outputStream; // Flujo de salida para enviar datos al servidor
     private Socket socket; // Socket para la conexión con el servidor
+    private Tablero tablero;
 
     /**
      * Constructor de la clase Cliente.
      * @param servidorIP La dirección IP del servidor.
      * @param puerto El número de puerto del servidor.
      */
-    public Cliente(String servidorIP, int puerto) {
+    public Cliente(String servidorIP, int puerto, Tablero tab)  {
+        this.tablero = tab;
         try {
             // Establecer la conexión con el servidor
             socket = new Socket(servidorIP, puerto);
@@ -51,8 +54,14 @@ public class Cliente {
                 // Realizar la lógica correspondiente con el objeto recibido
                 if (objetoRecibido instanceof List<?>) {
                     // Actualizar la lista de jugadores en Juego
+                    List< Jugador> Tam_Datos = (List<Jugador>) objetoRecibido;
+                    //Lista para contar datos
+                    System.out.println(Tam_Datos.get(0).getZona().size() + " Tamaño de zona recibida ");
                     System.out.println("Datos recibidos" + count++);
-                    Juego.actualizarJugadores((List<Jugador>) objetoRecibido);
+                    //Juego.actualizarJugadores((List<Jugador>) objetoRecibido);
+                    Juego.actualizarJugadores(Tam_Datos);
+                    tablero.jugadores_n.actualizarInterfaz(Tam_Datos);
+                    tablero.repaint();
                 } else if (objetoRecibido instanceof Integer) {
                     // Actualizar el turno actual en Juego
                     Juego.turnoActual = (Integer) objetoRecibido;
@@ -70,6 +79,7 @@ public class Cliente {
      */
     public void enviarJugadoresYAccion(List<Jugador> jugadores, int action) {
         try {
+            System.out.println(jugadores.get(0).getZona().size() + " Antes de enviar en el cliente ");
             // Envía la lista de jugadores al servidor
             outputStream.writeObject(jugadores);
 
@@ -89,5 +99,9 @@ public class Cliente {
         // Realiza acciones de inicio si es necesario
         System.out.println("Cliente iniciado con éxito.");
     
+    }
+
+    public void setTablero(Tablero tablero){
+        this.tablero = tablero;
     }
 }

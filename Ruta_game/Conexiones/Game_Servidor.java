@@ -9,6 +9,8 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
+import Modelo.Jugador;
+
 /**
  * La clase Game_Servidor representa el servidor del juego.
  * Se encarga de aceptar conexiones de clientes, manejar la comunicación con
@@ -24,6 +26,7 @@ public class Game_Servidor {
      * 
      * @param puerto El puerto en el que escuchará el servidor.
      */
+
     public Game_Servidor(int puerto) {
         try {
             // Inicializar el servidor en el puerto especificado
@@ -53,6 +56,7 @@ public class Game_Servidor {
                 // Iniciar un hilo para manejar la comunicación con el cliente
                 Thread t = new Thread(() -> manejarCliente(socket));
                 t.start();
+               
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -71,9 +75,11 @@ public class Game_Servidor {
             while (true) {
                 // Leer un objeto del cliente
                 Serializable objetoRecibido = (Serializable) inputStream.readObject();
-                
+                List< Jugador> Tam_Datos = (List<Jugador>) objetoRecibido;
+                System.out.println(Tam_Datos.get(0).getZona().size() + " Tamaño de zona recibida ");
                 // Enviar el objeto recibido a todos los clientes conectados
                 enviarAClientes(objetoRecibido);
+                //inputStream.
             }
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
@@ -90,7 +96,7 @@ public class Game_Servidor {
             try {
                 // Enviar el objeto a través del flujo de salida del cliente
                 clienteStream.writeObject(objeto);
-                clienteStream.flush();
+               // clienteStream.flush();
             } catch (IOException e) {
                 e.printStackTrace();
             }

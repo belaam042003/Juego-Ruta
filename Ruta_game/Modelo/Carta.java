@@ -7,6 +7,7 @@ import java.io.Serializable;
  * Implementa la interfaz Interface_Cartas y Serializable para poder ser serializada.
  */
 public class Carta implements Interface_Cartas, Serializable {
+    private static final long serialVersionUID = 1L;// Id serializable
     private String nombre; // Identificador de la carta con el nombre
     private String tipo; // Tipo de la carta (Problema, seguridad, solucion, distancia)
 

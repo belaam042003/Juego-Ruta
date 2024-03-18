@@ -10,6 +10,7 @@ import java.io.Serializable;
  * la lista de cartas que tiene el jugador en su mano, y la lista de cartas en su zona.
  */
 public class Jugador implements Serializable {
+    private static final long serialVersionUID = 1L;
     /**
      * Identificador del jugador.
      */
@@ -40,6 +41,7 @@ public class Jugador implements Serializable {
         this.mazo_jugador = new ArrayList<>();
         this.ub_zona = new ArrayList<>();
     }
+
 
     // Getters y setters para los atributos
 
