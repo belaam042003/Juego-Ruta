@@ -11,7 +11,8 @@ import java.util.List;
 
 /**
  * La clase Game_Servidor representa el servidor del juego.
- * Se encarga de aceptar conexiones de clientes, manejar la comunicación con ellos
+ * Se encarga de aceptar conexiones de clientes, manejar la comunicación con
+ * ellos
  * y redistribuir la información recibida a todos los clientes conectados.
  */
 public class Game_Servidor {
@@ -20,6 +21,7 @@ public class Game_Servidor {
 
     /**
      * Constructor de la clase Game_Servidor.
+     * 
      * @param puerto El puerto en el que escuchará el servidor.
      */
     public Game_Servidor(int puerto) {
@@ -59,17 +61,17 @@ public class Game_Servidor {
 
     /**
      * Método para manejar la comunicación con un cliente.
+     * 
      * @param socket El socket del cliente.
      */
     private void manejarCliente(Socket socket) {
         try {
             // Crear un flujo de entrada para recibir datos del cliente
             ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream());
-    
             while (true) {
                 // Leer un objeto del cliente
                 Serializable objetoRecibido = (Serializable) inputStream.readObject();
-    
+                
                 // Enviar el objeto recibido a todos los clientes conectados
                 enviarAClientes(objetoRecibido);
             }
@@ -80,6 +82,7 @@ public class Game_Servidor {
 
     /**
      * Método para enviar un objeto a todos los clientes conectados.
+     * 
      * @param objeto El objeto a enviar.
      */
     private void enviarAClientes(Serializable objeto) {
@@ -87,6 +90,7 @@ public class Game_Servidor {
             try {
                 // Enviar el objeto a través del flujo de salida del cliente
                 clienteStream.writeObject(objeto);
+                clienteStream.flush();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -95,7 +99,9 @@ public class Game_Servidor {
 
     /**
      * Método principal que crea una instancia del servidor y lo inicia.
-     * @param args Los argumentos de la línea de comandos (no se utilizan en este caso).
+     * 
+     * @param args Los argumentos de la línea de comandos (no se utilizan en este
+     *             caso).
      */
     public static void main(String[] args) {
         // Crear una instancia del servidor en el puerto 12345 y iniciarla

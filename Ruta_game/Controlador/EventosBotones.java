@@ -42,4 +42,18 @@ public class EventosBotones implements ActionListener {
             accionListener.realizarAccionB(6);
         }
     }
+
+    public void action_online(String action) {
+        // Verificar qué botón se ha presionado y ejecutar la acción correspondiente
+        if (action.equals("1")) {
+            // Llamar al método realizarAccionB con el parámetro correspondiente para poner una carta
+            accionListener.realizarAccionB(1);
+        } else if (action.equals("2")) {
+            // Llamar al método realizarAccionB con el parámetro correspondiente para descartar una carta
+            accionListener.realizarAccionB(2);
+        } else if (action.equals("3")) {
+            // Llamar al método realizarAccionB con el parámetro correspondiente para pasar el turno
+            accionListener.realizarAccionB(6);
+        }
+    }
 }

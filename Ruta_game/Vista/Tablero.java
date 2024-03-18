@@ -7,7 +7,8 @@ import java.awt.*;
 import java.util.List;
 
 /**
- * La clase Tablero representa la ventana principal del juego, que contiene la información
+ * La clase Tablero representa la ventana principal del juego, que contiene la
+ * información
  * de los jugadores y los botones de acción.
  */
 public class Tablero extends JFrame {
@@ -18,10 +19,12 @@ public class Tablero extends JFrame {
     public JButton btnDescartarCarta; // Botón para descartar una carta
     public JButton btnPasarTurno; // Botón para pasar el turno
     private EventoAccion accionListener; // Listener para los eventos de los botones
+    private EventosBotones botonController;
 
     /**
      * Constructor de la clase Tablero.
-     * @param jugadores Lista de jugadores en el juego.
+     * 
+     * @param jugadores      Lista de jugadores en el juego.
      * @param accionListener Listener para los eventos de los botones.
      */
     public Tablero(List<Jugador> jugadores, EventoAccion accionListener) {
@@ -35,7 +38,7 @@ public class Tablero extends JFrame {
      * Método para inicializar los componentes de la ventana.
      */
     private void initComponents() {
-        EventosBotones botonController = new EventosBotones(accionListener); // Controlador para los eventos de los botones
+        botonController = new EventosBotones(accionListener); // Controlador para los eventos de los botones
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Cierra la aplicación cuando se cierra la ventana
         setTitle("Juego de Mil Millas"); // Establece el título de la ventana
 
@@ -50,7 +53,11 @@ public class Tablero extends JFrame {
         btnPonerCarta.setFocusPainted(false);
         btnPonerCarta.addActionListener(botonController);
 
+<<<<<<< HEAD
         btnDescartarCarta = new JButton("Intercambiar Carta");
+=======
+        btnDescartarCarta = new JButton("Descartar Carta");
+>>>>>>> Nahum
         btnDescartarCarta.setBackground(Color.RED);
         btnDescartarCarta.setForeground(Color.WHITE);
         btnDescartarCarta.setFont(new Font("Arial", Font.BOLD, 20));
@@ -84,7 +91,8 @@ public class Tablero extends JFrame {
     }
 
     /**
-     * Método para inicializar el temporizador que actualiza la interfaz periódicamente.
+     * Método para inicializar el temporizador que actualiza la interfaz
+     * periódicamente.
      */
     private void initTimer() {
         Timer timer = new Timer(1000, e -> {
@@ -93,4 +101,9 @@ public class Tablero extends JFrame {
         });
         timer.start(); // Inicia el temporizador
     }
+
+    public EventosBotones getBotonController() {
+        return botonController;
+    }
+
 }

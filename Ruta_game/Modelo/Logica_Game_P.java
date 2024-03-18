@@ -42,7 +42,7 @@ public class Logica_Game_P {
      * @param idJugador Identificador del jugador que realiza la acción.
      * @param idCarta Identificador de la carta que el jugador desea poner en la zona.
      */
-    public static void ponerCarta(List<Jugador> jugadores, int idJugador,int idCarta) {
+    public static boolean ponerCarta(List<Jugador> jugadores, int idJugador,int idCarta) {
         Jugador jugadorSeleccionado = null;
 
         // Buscar al jugador por su ID
@@ -77,9 +77,10 @@ public class Logica_Game_P {
                     mano.remove(idCarta);
                     System.out.println("Carta puesta en la zona exitosamente.");
                     sacarCarta(Juego.mazo, jugadores, jugadorSeleccionado.getId());
-
+                    return true;
                 }else{
                     System.out.println("ERROR de Reglas");
+                    return true;
                 }
 
                 
@@ -89,6 +90,7 @@ public class Logica_Game_P {
         } else {
             System.out.println("Jugador no encontrado con el ID proporcionado.");
         }
+        return false;
     }
 
     /**

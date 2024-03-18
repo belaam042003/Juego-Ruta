@@ -77,9 +77,11 @@ public class Juego {
     public static void realizarAccionPonerCarta(String nombreCarta) {
         int idAct = jugadores.get(turnoActual).getId();
         int posicionCarta = obtenerPosicionCartaEnMano(jugadores, idAct, nombreCarta);
-    
         if (posicionCarta != -1) {
-            Logica_Game_P.ponerCarta(jugadores, idAct, posicionCarta);
+            boolean val = Logica_Game_P.ponerCarta(jugadores, idAct, posicionCarta);
+            if(val){
+                cliente.enviarJugadoresYAccion(jugadores, opcion);
+            }
         } else {
             System.out.println("La carta no se encuentra en la cartas del jugador actual.");
         }
@@ -99,6 +101,7 @@ public class Juego {
                 Logica_Game_P.descartarCarta(jugadores, idJugadorDescartarCarta);
                 descartarCartaSeleccionada = true;
             } else {
+                cliente.enviarJugadoresYAccion(jugadores, opcion);
                 System.out.println("Ya descataste una carta, te toca esperar el otro turno.");
             }
         });
@@ -120,6 +123,7 @@ public class Juego {
         acciones.put(6, () -> {
             System.out.println("Pasando Turno");
             cambiarTurno(jugadores);
+            cliente.enviarJugadoresYAccion(jugadores, opcion);
         });
 
         acciones.put(7, () -> {
@@ -138,6 +142,7 @@ public class Juego {
 
         if (accion != null) {
             accion.run();
+            cliente.enviarJugadoresYAccion(jugadores, opcion);
         } else {
             System.out.println("Opción no válida. Por favor, selecciona de nuevo.");
         }
@@ -204,8 +209,8 @@ public class Juego {
         // Actualizar la lista de jugadores con la nueva información recibida del servidor
         jugadores.clear();
         jugadores.addAll(nuevaListaJugadores);
-        System.out.println("Nueva Lista llegando");
-        EventoJugadores.StringVisual("Turno del jugador: " + jugadores.get(turnoActual).getId());
+        System.out.println("Nueva Lista llegando"); 
+        // EventoJugadores.StringVisual("Turno del jugador: " + jugadores.get(turnoActual).getId());
     }
 
     // Métodos ficticios para obtener la lista de jugadores y el turno actual

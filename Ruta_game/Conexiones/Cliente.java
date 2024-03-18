@@ -42,6 +42,7 @@ public class Cliente {
      * Método privado que se ejecuta en un hilo separado para recibir actualizaciones del servidor.
      */
     private void recibirActualizaciones() {
+        int count = 0; 
         try {
             while (true) {
                 // Leer un objeto serializable del flujo de entrada
@@ -50,6 +51,7 @@ public class Cliente {
                 // Realizar la lógica correspondiente con el objeto recibido
                 if (objetoRecibido instanceof List<?>) {
                     // Actualizar la lista de jugadores en Juego
+                    System.out.println("Datos recibidos" + count++);
                     Juego.actualizarJugadores((List<Jugador>) objetoRecibido);
                 } else if (objetoRecibido instanceof Integer) {
                     // Actualizar el turno actual en Juego
@@ -66,12 +68,15 @@ public class Cliente {
      * @param jugadores La lista de jugadores a enviar.
      * @param turnoActual El turno actual a enviar.
      */
-    public void enviarJugadoresYTurno(List<Jugador> jugadores, int turnoActual) {
+    public void enviarJugadoresYAccion(List<Jugador> jugadores, int action) {
         try {
             // Envía la lista de jugadores al servidor
             outputStream.writeObject(jugadores);
-            // Envía el turno actual al servidor
-            outputStream.writeObject(turnoActual);
+
+            // Implementar Turnos
+            outputStream.flush();
+
+            System.out.println("Action ENVIADA" + action);
         } catch (IOException e) {
             e.printStackTrace();
         }
