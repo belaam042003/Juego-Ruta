@@ -96,7 +96,8 @@ public class Game_Servidor {
             try {
                 // Enviar el objeto a través del flujo de salida del cliente
                 clienteStream.writeObject(objeto);
-               // clienteStream.flush();
+               clienteStream.flush();
+               clienteStream.reset();
             } catch (IOException e) {
                 e.printStackTrace();
             }

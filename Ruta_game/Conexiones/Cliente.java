@@ -85,7 +85,8 @@ public class Cliente {
 
             // Implementar Turnos
             outputStream.flush();
-
+            //Limpiar
+            outputStream.reset();
             System.out.println("Action ENVIADA" + action);
         } catch (IOException e) {
             e.printStackTrace();
