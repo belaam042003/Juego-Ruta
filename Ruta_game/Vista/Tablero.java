@@ -53,11 +53,7 @@ public class Tablero extends JFrame {
         btnPonerCarta.setFocusPainted(false);
         btnPonerCarta.addActionListener(botonController);
 
-<<<<<<< HEAD
         btnDescartarCarta = new JButton("Intercambiar Carta");
-=======
-        btnDescartarCarta = new JButton("Descartar Carta");
->>>>>>> Nahum
         btnDescartarCarta.setBackground(Color.RED);
         btnDescartarCarta.setForeground(Color.WHITE);
         btnDescartarCarta.setFont(new Font("Arial", Font.BOLD, 20));
