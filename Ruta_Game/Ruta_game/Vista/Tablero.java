@@ -46,12 +46,12 @@ public class Tablero extends JFrame {
         add(jugadores_n); // Agrega el panel de jugadores a la ventana
 
         // Crear botones
-        btnPonerCarta = new JButton("Jugar Carta");
-        btnPonerCarta.setBackground(Color.RED);
-        btnPonerCarta.setForeground(Color.WHITE);
-        btnPonerCarta.setFont(new Font("Arial", Font.BOLD, 20));
-        btnPonerCarta.setFocusPainted(false);
-        btnPonerCarta.addActionListener(botonController);
+        //btnPonerCarta = new JButton("Jugar Carta");
+        //btnPonerCarta.setBackground(Color.RED);
+        //btnPonerCarta.setForeground(Color.WHITE);
+        //btnPonerCarta.setFont(new Font("Arial", Font.BOLD, 20));
+        //btnPonerCarta.setFocusPainted(false);
+        //btnPonerCarta.addActionListener(botonController);
 
         btnDescartarCarta = new JButton("Intercambiar Carta");
         btnDescartarCarta.setBackground(Color.RED);
@@ -70,7 +70,7 @@ public class Tablero extends JFrame {
         // Crear un panel para contener los botones y organizarlos horizontalmente
         JPanel panelBotones = new JPanel();
         panelBotones.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 20)); // Organización horizontal con espaciado
-        panelBotones.add(btnPonerCarta);
+        //panelBotones.add(btnPonerCarta);
         panelBotones.add(btnDescartarCarta);
         panelBotones.add(btnPasarTurno);
 
@@ -81,7 +81,7 @@ public class Tablero extends JFrame {
         getContentPane().setBackground(Color.PINK);
 
         pack(); // Ajusta automáticamente el tamaño de la ventana
-        setSize(1500, 800);
+        setSize(1200, 500);
         setLocationRelativeTo(null); // Centra la ventana en la pantalla
         setVisible(true); // Hace visible la ventana
     }

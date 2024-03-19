@@ -1,26 +1,25 @@
 package Vista;
 
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
+import Main.Launcher;
+
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.*;
+/**
+ * La clase Bienvenida representa la ventana de bienvenida del juego.
+ * Contiene un mensaje de bienvenida, una imagen, instrucciones y un botón para iniciar el juego.
+ */
 
-import Main.Launcher;
-
-
-public class Instrucciones extends JFrame {
+ public class Bienvenida extends JFrame {
     private JButton btnIniciar; // Botón para iniciar el juego
 
     /**
-     * Constructor de la clase Instrucciones.
+     * Constructor de la clase Bienvenida.
      * Inicializa los componentes de la ventana de bienvenida.
      */
-    public Instrucciones() {
+    public Bienvenida() {
         initComponents();
     }
 
@@ -30,16 +29,16 @@ public class Instrucciones extends JFrame {
     private void initComponents() {
         // Configurar la ventana de inicio
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setTitle("Recomendaciones antes de correr");
+        setTitle("¡Bienvenido a la Carrera Extrema!");
 
         // Crear un panel con diseño BoxLayout para organizar los componentes verticalmente
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         panel.setBackground(Color.BLACK);
-        panel.setSize(400, 300);
+        panel.setSize(120, 400);
 
         // Agregar una etiqueta con la imagen de bienvenida en la parte superior
-        ImageIcon imagenBienvenida = new ImageIcon("Imagenes_principales/instrucciones.png");
+        ImageIcon imagenBienvenida = new ImageIcon("Juego-Ruta-Isabella/Ruta_game/Imagenes_principales/ruta1.png");
         JLabel labelImagen = new JLabel(imagenBienvenida);
         labelImagen.setAlignmentX(Component.CENTER_ALIGNMENT);
         panel.add(labelImagen);
@@ -59,7 +58,7 @@ public class Instrucciones extends JFrame {
         panel.add(instructionsPanel);
 
         // Agregar un botón de inicio con un diseño personalizado
-        btnIniciar = new JButton("¡A correr!");
+        btnIniciar = new JButton("¡Comenzar!");
         btnIniciar.setBackground(Color.RED);
         btnIniciar.setForeground(Color.WHITE);
         btnIniciar.setFont(new Font("Arial", Font.BOLD, 20));
@@ -68,7 +67,7 @@ public class Instrucciones extends JFrame {
         btnIniciar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Launcher.iniciarJuego();
+                instrucciones();
             }
         });
         panel.add(Box.createVerticalStrut(5)); // Espacio vertical
@@ -78,29 +77,20 @@ public class Instrucciones extends JFrame {
         add(panel);
         pack();
 
-        // Establecer el tamaño de la ventana después de llamar a pack()
-        
-
         // Centrar la ventana en la pantalla
         setLocationRelativeTo(null);
     }
-
+    
     /**
-     * Método para mostrar un cuadro de diálogo con un mensaje y obtener un número del usuario.
-     *
-     * @param mensaje El mensaje que se mostrará al usuario.
-     * @return El número ingresado por el usuario.
+     * Método privado para mostrar la ventana de instrucciones.
      */
-    public static int mostrarStringYObtenerNumero(String mensaje) {
-        String input = JOptionPane.showInputDialog(null, mensaje);
-        try {
-            return Integer.parseInt(input);
-        } catch (NumberFormatException ex) {
-            JOptionPane.showMessageDialog(null, "Por favor, ingrese un número válido.", "Error", JOptionPane.ERROR_MESSAGE);
-            return mostrarStringYObtenerNumero(mensaje);
-        }
+    private void instrucciones() {
+        // Crea y muestra la ventana de instrucciones
+        Instrucciones instrucciones = new Instrucciones();
+        instrucciones.setVisible(true);
+        
+        // Cierra la ventana actual
+        dispose();
     }
-    public static  void mostrarString(String mensaje) {
-        JOptionPane.showMessageDialog(null, mensaje);
-    } 
+
 }
